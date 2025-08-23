@@ -1,0 +1,7 @@
+flask
+pillo
+pytesseract
+PyMuPDF
+opencv-python
+numpy
+gunicorn
