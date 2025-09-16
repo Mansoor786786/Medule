@@ -254,33 +254,20 @@ def extract_medical_data(text):
             continue
             
         # Multiple pattern variations
+       # compute escaped metric BEFORE list
+        escaped_metric = metric.replace(" ", r"\s*")
+
         patterns = [
-            # Standard format: "Parameter: Value"
             rf"{re.escape(metric)}\s*[:\-=]\s*(\d+\.?\d*)",
             rf"{metric}\s*[:\-=]\s*(\d+\.?\d*)",
-            
-            # With units: "Parameter: Value unit"
             rf"{re.escape(metric)}\s*[:\-=]\s*(\d+\.?\d*)\s*{re.escape(unit)}",
-            
-            # Table format: "Value Parameter"
             rf"(\d+\.?\d*)\s+{re.escape(metric)}",
             rf"(\d+\.?\d*)\s*{metric}",
-            
-            # Flexible spacing
-            escaped_metric = metric.replace(" ", r"\s*")
-            rf"{escaped_metric}\s*[:\-=]?\s*(\d+\.?\d*)",
-            
-            # Case insensitive
+            rf"{escaped_metric}\s*[:\-=]?\s*(\d+\.?\d*)",   # ✅ safe usage
             rf"(?i){re.escape(metric)}\s*[:\-=]?\s*(\d+\.?\d*)",
-            
-            # With parentheses
-            rf"{metric}\s*\([^)]*\)\s*[:\-=]?\s*(\d+\.?\d*)",
-            
-            # Lab report format
+            rf"{metric}\s*\([^)]\)\s[:\-=]?\s*(\d+\.?\d*)",
             rf"{metric}\s+(\d+\.?\d*)\s+{re.escape(unit)}",
             rf"{metric}\s+(\d+\.?\d*)",
-            
-            # Abbreviated forms
             rf"{metric[:3]}\s*[:\-=]?\s*(\d+\.?\d*)" if len(metric) > 3 else None,
         ]
         
