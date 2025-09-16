@@ -1,10 +1,6 @@
 services:
   - type: web
-    name: medical-report-analyzer
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn medical_analyzer:app
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.4
-
+    name: medule-app
+    env: docker
+    plan: free   # or starter/pro depending on your usage
+    autoDeploy: true
