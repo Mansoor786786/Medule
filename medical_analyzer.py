@@ -267,7 +267,8 @@ def extract_medical_data(text):
             rf"(\d+\.?\d*)\s*{metric}",
             
             # Flexible spacing
-            rf"{metric.replace(' ', r'\s*')}\s*[:\-=]?\s*(\d+\.?\d*)",
+            escaped_metric = metric.replace(" ", r"\s*")
+            rf"{escaped_metric}\s*[:\-=]?\s*(\d+\.?\d*)",
             
             # Case insensitive
             rf"(?i){re.escape(metric)}\s*[:\-=]?\s*(\d+\.?\d*)",
